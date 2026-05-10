@@ -2,25 +2,51 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article/remote/remote_article_bloc.dart';
+import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article/remote/remote_article_event.dart';
 import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article/remote/remote_article_state.dart';
 
 import '../../../domain/entities/article.dart';
 import '../../widgets/article_tile.dart';
 
-class DailyNews extends StatelessWidget {
+class DailyNews extends StatefulWidget {
   const DailyNews({Key? key}) : super(key: key);
+
+  @override
+  State<DailyNews> createState() => _DailyNewsState();
+}
+
+class _DailyNewsState extends State<DailyNews> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  /// Listens to scroll position and loads more articles when near bottom.
+  void _onScroll() {
+    if (_scrollController.position.pixels >
+        _scrollController.position.maxScrollExtent * 0.8) {
+      context.read<RemoteArticlesBloc>().add(const LoadMoreArticles());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return _buildPage();
   }
 
-  _buildAppbar(BuildContext context) {
+  AppBar _buildAppbar(BuildContext context) {
     return AppBar(
-      title: const Text(
-        'Daily News',
-        style: TextStyle(color: Colors.black),
-      ),
+      title: const Text('Daily News', style: TextStyle(color: Colors.black)),
       actions: [
         GestureDetector(
           onTap: () => _onShowSavedArticlesViewTapped(context),
@@ -33,41 +59,53 @@ class DailyNews extends StatelessWidget {
     );
   }
 
-  _buildPage() {
+  Widget _buildPage() {
     return BlocBuilder<RemoteArticlesBloc, RemoteArticlesState>(
       builder: (context, state) {
         if (state is RemoteArticlesLoading) {
           return Scaffold(
-              appBar: _buildAppbar(context),
-              body: const Center(child: CupertinoActivityIndicator()));
+            appBar: _buildAppbar(context),
+            body: const Center(child: CupertinoActivityIndicator()),
+          );
         }
         if (state is RemoteArticlesError) {
           return Scaffold(
-              appBar: _buildAppbar(context),
-              body: const Center(child: Icon(Icons.refresh)));
+            appBar: _buildAppbar(context),
+            body: const Center(child: Icon(Icons.refresh)),
+          );
         }
         if (state is RemoteArticlesDone) {
-          return _buildArticlesPage(context, state.articles!);
+          return _buildArticlesPage(context, state);
         }
         return const SizedBox();
       },
     );
   }
 
-  Widget _buildArticlesPage(
-      BuildContext context, List<ArticleEntity> articles) {
-    List<Widget> articleWidgets = [];
-    for (var article in articles) {
-      articleWidgets.add(ArticleWidget(
-        article: article,
-        onArticlePressed: (article) => _onArticlePressed(context, article),
-      ));
-    }
+  Widget _buildArticlesPage(BuildContext context, RemoteArticlesDone state) {
+    final articles = state.articles ?? [];
+    final isLoadingMore = state.isLoadingMore;
 
     return Scaffold(
       appBar: _buildAppbar(context),
-      body: ListView(
-        children: articleWidgets,
+      body: ListView.builder(
+        controller: _scrollController,
+        itemCount: articles.length + (isLoadingMore ? 1 : 0),
+        itemBuilder: (context, index) {
+          // Show loading indicator at the end if fetching more
+          if (index == articles.length) {
+            return const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Center(child: CupertinoActivityIndicator()),
+            );
+          }
+
+          final article = articles[index];
+          return ArticleWidget(
+            article: article,
+            onArticlePressed: (article) => _onArticlePressed(context, article),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

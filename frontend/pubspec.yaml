@@ -24,15 +24,18 @@ dependencies:
   equatable: ^2.0.8
 
   #service locator
+  injectable: ^3.0.0
   get_it: ^9.2.1
   
   #dateFormat
   intl: ^0.20.2
 
   #Database
-  floor: ^1.5.0
+  drift: ^2.33.0
+  drift_flutter: ^0.3.0
 
   #make request to api
+  dio: ^5.9.2
   retrofit: ^4.9.2
 
   # Firebase
@@ -51,9 +54,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  floor_generator: ^1.5.0
-  build_runner: ^2.4.13
-  
+  build_runner: ^2.15.0
+  drift_dev: ^2.33.0
+  mockito: ^5.5.1
+  retrofit_generator: ^10.2.6
 
 flutter:
 

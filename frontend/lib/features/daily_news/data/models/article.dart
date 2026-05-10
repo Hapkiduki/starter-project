@@ -39,4 +39,21 @@ class ArticleModel extends ArticleEntity {
       content: entity.content,
     );
   }
+
+  /// Converts this ArticleModel to an ArticleEntity.
+  ///
+  /// This method satisfies architecture requirement 1.3.2: Models must contain
+  /// a method for conversion to entities.
+  ArticleEntity toEntity() {
+    return ArticleEntity(
+      id: id,
+      author: author,
+      title: title,
+      description: description,
+      url: url,
+      urlToImage: urlToImage,
+      publishedAt: publishedAt,
+      content: content,
+    );
+  }
 }

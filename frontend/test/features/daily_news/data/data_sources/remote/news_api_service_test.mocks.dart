@@ -3,14 +3,15 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
-import 'package:dio/dio.dart' as _i5;
+import 'package:dio/dio.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:news_app_clean_architecture/features/daily_news/data/data_sources/remote/models/top_headlines.dart'
+    as _i5;
 import 'package:news_app_clean_architecture/features/daily_news/data/data_sources/remote/news_api_client.dart'
-    as _i2;
-import 'package:news_app_clean_architecture/features/daily_news/data/models/article.dart'
-    as _i4;
+    as _i3;
+import 'package:retrofit/retrofit.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -27,30 +28,62 @@ import 'package:news_app_clean_architecture/features/daily_news/data/models/arti
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
 
+class _FakeHttpResponse_0<T> extends _i1.SmartFake
+    implements _i2.HttpResponse<T> {
+  _FakeHttpResponse_0(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [NewsApiClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNewsApiClient extends _i1.Mock implements _i2.NewsApiClient {
+class MockNewsApiClient extends _i1.Mock implements _i3.NewsApiClient {
   @override
-  _i3.Future<List<_i4.ArticleModel>> getNewsArticles({
+  _i4.Future<_i2.HttpResponse<_i5.TopHeadlinesModel>> getNewsArticles({
     String? apiKey,
     String? country,
     String? category,
-    _i5.CancelToken? cancelToken,
+    int? page,
+    int? pageSize,
+    _i6.CancelToken? cancelToken,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#getNewsArticles, [], {
               #apiKey: apiKey,
               #country: country,
               #category: category,
+              #page: page,
+              #pageSize: pageSize,
               #cancelToken: cancelToken,
             }),
-            returnValue: _i3.Future<List<_i4.ArticleModel>>.value(
-              <_i4.ArticleModel>[],
-            ),
-            returnValueForMissingStub: _i3.Future<List<_i4.ArticleModel>>.value(
-              <_i4.ArticleModel>[],
-            ),
+            returnValue:
+                _i4.Future<_i2.HttpResponse<_i5.TopHeadlinesModel>>.value(
+                  _FakeHttpResponse_0<_i5.TopHeadlinesModel>(
+                    this,
+                    Invocation.method(#getNewsArticles, [], {
+                      #apiKey: apiKey,
+                      #country: country,
+                      #category: category,
+                      #page: page,
+                      #pageSize: pageSize,
+                      #cancelToken: cancelToken,
+                    }),
+                  ),
+                ),
+            returnValueForMissingStub:
+                _i4.Future<_i2.HttpResponse<_i5.TopHeadlinesModel>>.value(
+                  _FakeHttpResponse_0<_i5.TopHeadlinesModel>(
+                    this,
+                    Invocation.method(#getNewsArticles, [], {
+                      #apiKey: apiKey,
+                      #country: country,
+                      #category: category,
+                      #page: page,
+                      #pageSize: pageSize,
+                      #cancelToken: cancelToken,
+                    }),
+                  ),
+                ),
           )
-          as _i3.Future<List<_i4.ArticleModel>>);
+          as _i4.Future<_i2.HttpResponse<_i5.TopHeadlinesModel>>);
 }

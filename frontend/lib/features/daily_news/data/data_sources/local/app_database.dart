@@ -1,12 +1,19 @@
+import 'package:drift/drift.dart';
+import 'package:drift_flutter/drift_flutter.dart';
 
-import 'package:floor/floor.dart';
-import 'package:news_app_clean_architecture/features/daily_news/data/data_sources/local/DAO/article_dao.dart';
-import '../../models/article.dart';
-import 'package:sqflite/sqflite.dart' as sqflite;
-import 'dart:async';
+import 'DAO/article_dao.dart';
+import 'tables/article_table.dart';
+
 part 'app_database.g.dart';
 
-@Database(version: 1, entities: [ArticleModel])
-abstract class AppDatabase extends FloorDatabase {
-  ArticleDao get articleDAO;
+@DriftDatabase(tables: [Articles], daos: [ArticleDao])
+class AppDatabase extends _$AppDatabase {
+  AppDatabase() : super(_openConnection());
+
+  @override
+  int get schemaVersion => 1;
+}
+
+QueryExecutor _openConnection() {
+  return driftDatabase(name: 'app_database');
 }
