@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widget_previews.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../extensions/build_context_extensions.dart';
-import '../theme/app_colors.dart';
+import '../previews/app_preview.dart';
 import 'category_badge.dart';
 
 /// Community article list tile with avatar, author name, category badge,
@@ -40,9 +39,12 @@ class CommunityArticleTile extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(color: AppColors.outlineVariant, width: 1),
+            bottom: BorderSide(
+              color: context.colorScheme.outlineVariant,
+              width: 1,
+            ),
           ),
         ),
         child: Column(
@@ -69,7 +71,7 @@ class CommunityArticleTile extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: context.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
+                color: context.colorScheme.onSurfaceVariant,
               ),
             ),
             const SizedBox(height: 10),
@@ -78,10 +80,10 @@ class CommunityArticleTile extends StatelessWidget {
               children: [
                 Text(timeAgo, style: context.textTheme.labelSmall),
                 const Spacer(),
-                const Icon(
+                Icon(
                   Ionicons.chatbox_ellipses_outline,
                   size: 14,
-                  color: AppColors.textHint,
+                  color: context.colorScheme.onSurfaceVariant,
                 ),
                 const SizedBox(width: 4),
                 Text('$commentCount', style: context.textTheme.labelSmall),
@@ -98,16 +100,16 @@ class CommunityArticleTile extends StatelessWidget {
       return CircleAvatar(
         radius: 18,
         backgroundImage: NetworkImage(avatarUrl!),
-        backgroundColor: AppColors.surfaceContainer,
+        backgroundColor: context.colorScheme.surfaceContainer,
       );
     }
     return CircleAvatar(
       radius: 18,
-      backgroundColor: AppColors.surfaceContainer,
+      backgroundColor: context.colorScheme.surfaceContainer,
       child: Text(
         avatarInitials ?? authorName.substring(0, 2).toUpperCase(),
         style: context.textTheme.labelSmall?.copyWith(
-          color: AppColors.textSecondary,
+          color: context.colorScheme.onSurfaceVariant,
         ),
       ),
     );
@@ -115,10 +117,9 @@ class CommunityArticleTile extends StatelessWidget {
 }
 
 /// Preview of community article tile.
-@Preview(name: 'Community Article Tile')
+@AppPreview(name: 'Community Article Tile')
 Widget previewCommunityArticleTile() {
   return const Material(
-    color: AppColors.background,
     child: CommunityArticleTile(
       authorName: 'Jane Smith',
       title: 'Great Tips for Flutter Development',
@@ -132,10 +133,9 @@ Widget previewCommunityArticleTile() {
 }
 
 /// Preview of featured community article tile.
-@Preview(name: 'Community Article Tile Featured')
+@AppPreview(name: 'Community Article Tile Featured')
 Widget previewCommunityArticleTileFeatured() {
   return const Material(
-    color: AppColors.background,
     child: CommunityArticleTile(
       authorName: 'John Doe',
       title: 'Featured Community Story',

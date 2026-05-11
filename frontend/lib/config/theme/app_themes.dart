@@ -10,74 +10,53 @@ abstract final class AppTheme {
     displayLarge: GoogleFonts.newsreader(
       fontSize: 57,
       fontWeight: FontWeight.w700,
-      color: AppColors.textPrimary,
     ),
     displayMedium: GoogleFonts.newsreader(
       fontSize: 45,
       fontWeight: FontWeight.w700,
-      color: AppColors.textPrimary,
     ),
     displaySmall: GoogleFonts.newsreader(
       fontSize: 36,
       fontWeight: FontWeight.w700,
-      color: AppColors.textPrimary,
     ),
     headlineLarge: GoogleFonts.newsreader(
       fontSize: 32,
       fontWeight: FontWeight.w700,
-      color: AppColors.textPrimary,
     ),
     headlineMedium: GoogleFonts.newsreader(
       fontSize: 28,
       fontWeight: FontWeight.w700,
-      color: AppColors.textPrimary,
     ),
     headlineSmall: GoogleFonts.newsreader(
       fontSize: 24,
       fontWeight: FontWeight.w700,
-      color: AppColors.textPrimary,
     ),
     titleLarge: GoogleFonts.newsreader(
       fontSize: 22,
       fontWeight: FontWeight.w700,
-      color: AppColors.textPrimary,
     ),
     titleMedium: GoogleFonts.workSans(
       fontSize: 16,
       fontWeight: FontWeight.w600,
-      color: AppColors.textPrimary,
     ),
-    titleSmall: GoogleFonts.workSans(
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
-      color: AppColors.textPrimary,
-    ),
-    bodyLarge: GoogleFonts.workSans(
-      fontSize: 16,
-      fontWeight: FontWeight.w400,
-      color: AppColors.textPrimary,
-    ),
-    bodyMedium: GoogleFonts.workSans(
-      fontSize: 14,
-      fontWeight: FontWeight.w400,
-      color: AppColors.textPrimary,
-    ),
+    titleSmall: GoogleFonts.workSans(fontSize: 14, fontWeight: FontWeight.w600),
+    bodyLarge: GoogleFonts.workSans(fontSize: 16, fontWeight: FontWeight.w400),
+    bodyMedium: GoogleFonts.workSans(fontSize: 14, fontWeight: FontWeight.w400),
     bodySmall: GoogleFonts.workSans(
       fontSize: 12,
       fontWeight: FontWeight.w400,
-      color: AppColors.textSecondary,
+      // color heredado de ColorScheme.onSurfaceVariant
     ),
     labelLarge: GoogleFonts.workSans(
       fontSize: 11,
       fontWeight: FontWeight.w700,
       letterSpacing: 0.8,
-      color: AppColors.textPrimary,
     ),
     labelSmall: GoogleFonts.workSans(
       fontSize: 10,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.5,
-      color: AppColors.textSecondary,
+      // color heredado de ColorScheme.onSurfaceVariant
     ),
   );
 
@@ -92,6 +71,7 @@ abstract final class AppTheme {
       error: AppColors.error,
       surface: AppColors.surface,
       onSurface: AppColors.textPrimary,
+      onSurfaceVariant: AppColors.textSecondary,
       outline: AppColors.outline,
     ),
     appBarTheme: AppBarTheme(

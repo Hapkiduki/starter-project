@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widget_previews.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../extensions/build_context_extensions.dart';
-import '../theme/app_colors.dart';
+import '../previews/app_preview.dart';
 import 'category_badge.dart';
 
 /// Full-width hero card with an image, category badge overlay, large serif title,
@@ -41,7 +40,7 @@ class HeroArticleCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildImage(),
+                _buildImage(context),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
                   child: Column(
@@ -59,7 +58,7 @@ class HeroArticleCard extends StatelessWidget {
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: context.textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textSecondary,
+                            color: context.colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
@@ -84,16 +83,16 @@ class HeroArticleCard extends StatelessWidget {
     );
   }
 
-  Widget _buildImage() {
+  Widget _buildImage(BuildContext context) {
     if (imageUrl == null || imageUrl!.isEmpty) {
       return Container(
         width: double.infinity,
         height: 220,
-        color: AppColors.surfaceContainer,
-        child: const Icon(
+        color: context.colorScheme.surfaceContainer,
+        child: Icon(
           Ionicons.image_outline,
           size: 48,
-          color: AppColors.outline,
+          color: context.colorScheme.outline,
         ),
       );
     }
@@ -105,16 +104,16 @@ class HeroArticleCard extends StatelessWidget {
       placeholder: (_, _) => Container(
         width: double.infinity,
         height: 220,
-        color: AppColors.surfaceContainer,
+        color: context.colorScheme.surfaceContainer,
       ),
       errorWidget: (_, _, _) => Container(
         width: double.infinity,
         height: 220,
-        color: AppColors.surfaceContainer,
-        child: const Icon(
+        color: context.colorScheme.surfaceContainer,
+        child: Icon(
           Ionicons.image_outline,
           size: 48,
-          color: AppColors.outline,
+          color: context.colorScheme.outline,
         ),
       ),
     );
@@ -122,10 +121,9 @@ class HeroArticleCard extends StatelessWidget {
 }
 
 /// Preview of hero article card.
-@Preview(name: 'Hero Article Card')
+@AppPreview(name: 'Hero Article Card')
 Widget previewHeroArticleCard() {
   return const Material(
-    color: AppColors.background,
     child: HeroArticleCard(
       title: 'Flutter Framework Latest Updates and Features',
       imageUrl:

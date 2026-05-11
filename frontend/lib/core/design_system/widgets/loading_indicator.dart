@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
-import 'package:flutter/widget_previews.dart';
+import '../extensions/build_context_extensions.dart';
+import '../previews/app_preview.dart';
 
 /// Centered loading indicator used across the app.
 class LoadingIndicator extends StatelessWidget {
@@ -15,14 +15,13 @@ class LoadingIndicator extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const CircularProgressIndicator(color: AppColors.primary),
+          const CircularProgressIndicator(),
           if (message != null) ...[
             const SizedBox(height: 16),
             Text(
               message!,
-              style: const TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 14,
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: context.colorScheme.onSurfaceVariant,
               ),
             ),
           ],
@@ -33,10 +32,9 @@ class LoadingIndicator extends StatelessWidget {
 }
 
 /// Preview of loading indicator.
-@Preview(name: 'Loading Indicator')
+@AppPreview(name: 'Loading Indicator')
 Widget previewLoadingIndicator() {
   return const Material(
-    color: AppColors.background,
     child: LoadingIndicator(message: 'Loading articles...'),
   );
 }

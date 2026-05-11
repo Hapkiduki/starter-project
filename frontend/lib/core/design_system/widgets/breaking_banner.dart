@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widget_previews.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../extensions/build_context_extensions.dart';
-import '../theme/app_colors.dart';
+import '../previews/app_preview.dart';
 
 /// Red "BREAKING" banner with rotating headline text.
 class BreakingBanner extends HookWidget {
@@ -45,7 +44,7 @@ class BreakingBanner extends HookWidget {
     final headline = headlines[safeIndex];
 
     return Container(
-      color: AppColors.primary,
+      color: context.colorScheme.primary,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: Row(
         spacing: 10,
@@ -53,12 +52,15 @@ class BreakingBanner extends HookWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.white, width: 1),
+              border: Border.all(
+                color: context.colorScheme.onPrimary,
+                width: 1,
+              ),
             ),
             child: Text(
               'BREAKING',
               style: context.textTheme.labelSmall?.copyWith(
-                color: Colors.white,
+                color: context.colorScheme.onPrimary,
                 letterSpacing: 0.5,
               ),
             ),
@@ -88,7 +90,7 @@ class BreakingBanner extends HookWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: context.textTheme.bodySmall?.copyWith(
-                  color: Colors.white,
+                  color: context.colorScheme.onPrimary,
                 ),
               ),
             ),
@@ -100,10 +102,9 @@ class BreakingBanner extends HookWidget {
 }
 
 /// Preview of breaking news banner.
-@Preview(name: 'Breaking Banner')
+@AppPreview(name: 'Breaking Banner')
 Widget previewBreakingBanner() {
   return Material(
-    color: AppColors.background,
     child: BreakingBanner(
       headlines: [
         'Major News Story: New Developments Emerge in Breaking News',

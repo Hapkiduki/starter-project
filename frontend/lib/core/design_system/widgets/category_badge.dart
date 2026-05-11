@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
-import 'package:flutter/widget_previews.dart';
-
 import '../extensions/build_context_extensions.dart';
+import '../previews/app_preview.dart';
 
 /// Category label chip used across article cards and detail screens.
 ///
@@ -20,12 +18,16 @@ class CategoryBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: filled
-          ? const BoxDecoration(color: AppColors.primary)
-          : BoxDecoration(border: Border.all(color: AppColors.outline)),
+          ? BoxDecoration(color: context.colorScheme.primary)
+          : BoxDecoration(
+              border: Border.all(color: context.colorScheme.outline),
+            ),
       child: Text(
         label.toUpperCase(),
         style: context.textTheme.labelSmall?.copyWith(
-          color: filled ? Colors.white : AppColors.textPrimary,
+          color: filled
+              ? context.colorScheme.onPrimary
+              : context.colorScheme.onSurface,
         ),
       ),
     );
@@ -33,10 +35,9 @@ class CategoryBadge extends StatelessWidget {
 }
 
 /// Preview of filled category badge.
-@Preview(name: 'Filled Category Badge')
+@AppPreview(name: 'Filled Category Badge')
 Widget previewCategoryBadgeFilled() {
   return const Material(
-    color: AppColors.background,
     child: Padding(
       padding: EdgeInsets.all(16),
       child: CategoryBadge('Featured'),
@@ -45,10 +46,9 @@ Widget previewCategoryBadgeFilled() {
 }
 
 /// Preview of outlined category badge.
-@Preview(name: 'Outlined Category Badge')
+@AppPreview(name: 'Outlined Category Badge')
 Widget previewCategoryBadgeOutlined() {
   return const Material(
-    color: AppColors.background,
     child: Padding(
       padding: EdgeInsets.all(16),
       child: CategoryBadge('Local News', filled: false),

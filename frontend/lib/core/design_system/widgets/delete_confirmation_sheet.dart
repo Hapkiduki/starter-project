@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widget_previews.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../extensions/build_context_extensions.dart';
-import '../theme/app_colors.dart';
+import '../previews/app_preview.dart';
 
 /// Bottom sheet modal asking the user to confirm article deletion.
 ///
@@ -28,8 +27,8 @@ class DeleteConfirmationSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: context.colorScheme.surface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
       ),
       child: Column(
@@ -41,7 +40,7 @@ class DeleteConfirmationSheet extends StatelessWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: AppColors.outlineVariant,
+                color: context.colorScheme.outlineVariant,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -52,7 +51,7 @@ class DeleteConfirmationSheet extends StatelessWidget {
           Text(
             'This action cannot be undone.',
             style: context.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
+              color: context.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 28),
@@ -87,10 +86,9 @@ class DeleteConfirmationSheet extends StatelessWidget {
 }
 
 /// Preview of delete confirmation sheet.
-@Preview(name: 'Delete Confirmation Sheet')
+@AppPreview(name: 'Delete Confirmation Sheet')
 Widget previewDeleteConfirmationSheet() {
   return Material(
-    color: AppColors.background,
     child: DeleteConfirmationSheet(onDelete: () {}, onCancel: () {}),
   );
 }
