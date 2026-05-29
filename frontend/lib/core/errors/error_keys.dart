@@ -91,3 +91,15 @@ abstract final class NetworkErrorKeys {
   /// Generic network error.
   static const String generic = 'network.generic';
 }
+
+/// Local cache/database error keys.
+abstract final class CacheErrorKeys {
+  /// Generic local database error.
+  static const String generic = 'cache.generic';
+
+  /// Requested item not found in local database.
+  static const String notFound = 'cache.notFound';
+
+  /// Failed to write to local database.
+  static const String writeError = 'cache.writeError';
+}
