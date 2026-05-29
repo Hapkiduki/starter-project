@@ -24,6 +24,14 @@ class LocalBookmarksDataSource {
     }
   }
 
+  Stream<List<BookmarkModel>> watchBookmarks() {
+    try {
+      return _database.bookmarkDao.watchAllBookmarks();
+    } catch (_) {
+      throw const CacheException(CacheErrorKeys.generic);
+    }
+  }
+
   Future<void> addBookmark(BookmarkModel bookmark) async {
     try {
       await _database.bookmarkDao.insertBookmark(bookmark);

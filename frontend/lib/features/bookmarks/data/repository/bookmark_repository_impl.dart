@@ -13,9 +13,10 @@ class BookmarkRepositoryImpl implements BookmarkRepository {
   const BookmarkRepositoryImpl(this._localDataSource);
 
   @override
-  Future<List<BookmarkEntity>> getBookmarks() async {
-    final models = await _localDataSource.getBookmarks();
-    return models.map((m) => m.toEntity()).toList();
+  Stream<List<BookmarkEntity>> watchBookmarks() {
+    return _localDataSource.watchBookmarks().map(
+          (models) => models.map((m) => m.toEntity()).toList(),
+        );
   }
 
   @override

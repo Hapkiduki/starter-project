@@ -1,14 +1,10 @@
-import 'package:news_app_clean_architecture/core/usecase/usecase.dart';
-
 import '../entities/bookmark_entity.dart';
 import '../repository/bookmark_repository.dart';
 
-class GetBookmarksUseCase implements UseCase<List<BookmarkEntity>, void> {
+class WatchBookmarksUseCase {
   final BookmarkRepository _bookmarkRepository;
 
-  const GetBookmarksUseCase(this._bookmarkRepository);
+  const WatchBookmarksUseCase(this._bookmarkRepository);
 
-  @override
-  Future<List<BookmarkEntity>> call({void params}) =>
-      _bookmarkRepository.getBookmarks();
+  Stream<List<BookmarkEntity>> call() => _bookmarkRepository.watchBookmarks();
 }

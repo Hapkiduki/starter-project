@@ -2,7 +2,7 @@ import '../entities/article_source.dart';
 import '../entities/bookmark_entity.dart';
 
 abstract class BookmarkRepository {
-  Future<List<BookmarkEntity>> getBookmarks();
+  Stream<List<BookmarkEntity>> watchBookmarks();
 
   Future<void> addBookmark(BookmarkEntity bookmark);
 

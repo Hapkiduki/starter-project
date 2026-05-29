@@ -9,8 +9,8 @@ import '../domain/usecases/remove_bookmark.dart';
 @module
 abstract class BookmarksModule {
   @lazySingleton
-  GetBookmarksUseCase getBookmarksUseCase(BookmarkRepository repository) =>
-      GetBookmarksUseCase(repository);
+  WatchBookmarksUseCase watchBookmarksUseCase(BookmarkRepository repository) =>
+      WatchBookmarksUseCase(repository);
 
   @lazySingleton
   AddBookmarkUseCase addBookmarkUseCase(BookmarkRepository repository) =>
