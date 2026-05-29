@@ -59,7 +59,7 @@ extension BuildContextExtensions on BuildContext {
       return translated;
     }
 
-    if (value.contains('.')) {
+    if (value.startsWith('.')) {
       return l10n.commonSomethingWentWrong;
     }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:news_app_clean_architecture/l10n/generated/app_localizations.dart';
 
 import '../extensions/build_context_extensions.dart';
 import '../previews/app_preview.dart';
@@ -28,7 +29,7 @@ class ErrorDisplay extends StatelessWidget {
             Icon(icon, size: 64, color: context.colorScheme.onSurfaceVariant),
             const SizedBox(height: 16),
             Text(
-              message,
+              context.localizeText(message),
               textAlign: TextAlign.center,
               style: context.textTheme.bodyLarge?.copyWith(
                 color: context.colorScheme.onSurfaceVariant,
@@ -39,7 +40,7 @@ class ErrorDisplay extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Ionicons.refresh_outline),
-                label: const Text('Retry'),
+                label: Text(context.l10n.commonRetry),
               ),
             ],
           ],
@@ -51,12 +52,16 @@ class ErrorDisplay extends StatelessWidget {
 
 @AppPreview(name: 'Error display with retry')
 Widget errorDisplayWithRetryPreview() {
-  return Material(
-    child: Padding(
-      padding: const EdgeInsets.all(8),
-      child: ErrorDisplay(
-        message: 'Something went wrong. Please try again.',
-        onRetry: () {}, // Replace with a callback to test the button
+  return MaterialApp(
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    home: Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: ErrorDisplay(
+          message: 'Something went wrong. Please try again.',
+          onRetry: () {},
+        ),
       ),
     ),
   );
