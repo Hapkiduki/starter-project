@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app_clean_architecture/core/design_system/design_system.dart';
 import 'package:news_app_clean_architecture/features/daily_news/domain/entities/article.dart';
-import 'package:news_app_clean_architecture/features/daily_news/presentation/pages/article_detail/article_detail.dart';
+import 'package:news_app_clean_architecture/features/daily_news/routes/article_routes.dart';
+import 'package:news_app_clean_architecture/features/community_articles/routes/community_routes.dart';
 
 import '../../domain/entities/article_source.dart';
 import '../../domain/entities/bookmark_entity.dart';
@@ -40,7 +40,7 @@ class SavedArticlesScreen extends HookWidget {
       leading: Padding(
         padding: const EdgeInsets.all(8),
         child: GestureDetector(
-          onTap: () => Navigator.pushNamed(context, '/profile'),
+          onTap: () => context.goToProfile(),
           child: CircleAvatar(
             radius: 18,
             backgroundColor: context.colorScheme.surfaceContainer,
@@ -54,15 +54,13 @@ class SavedArticlesScreen extends HookWidget {
       ),
       title: Text(
         'Symmetry NEWS',
-        style: GoogleFonts.newsreader(
-          fontSize: 18,
-          fontWeight: FontWeight.w700,
+        style: context.textTheme.titleLarge?.copyWith(
           color: context.colorScheme.onSurface,
         ),
       ),
       actions: [
         IconButton(
-          onPressed: () => Navigator.pushNamed(context, '/search'),
+          onPressed: () => context.goToSearch(),
           icon: Icon(Icons.search, color: context.colorScheme.onSurface),
         ),
       ],
@@ -81,18 +79,14 @@ class SavedArticlesScreen extends HookWidget {
               children: [
                 Text(
                   'Saved',
-                  style: GoogleFonts.newsreader(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w700,
+                  style: context.textTheme.headlineMedium?.copyWith(
                     color: context.colorScheme.onSurface,
                   ),
                 ),
                 const Spacer(),
                 Text(
                   '${bookmarks.length} ARTICLE${bookmarks.length == 1 ? '' : 'S'}',
-                  style: GoogleFonts.workSans(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
+                  style: context.textTheme.labelLarge?.copyWith(
                     letterSpacing: 0.6,
                     color: context.colorScheme.onSurfaceVariant,
                   ),
@@ -118,8 +112,7 @@ class SavedArticlesScreen extends HookWidget {
                     Text(
                       'No saved articles yet.\nTap the bookmark icon on any article to save it.',
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.workSans(
-                        fontSize: 14,
+                      style: context.textTheme.bodyMedium?.copyWith(
                         color: context.colorScheme.onSurfaceVariant,
                         height: 1.5,
                       ),
@@ -186,10 +179,7 @@ class SavedArticlesScreen extends HookWidget {
                 padding: const EdgeInsets.fromLTRB(16, 24, 16, 12),
                 child: Text(
                   'ARCHIVED COLLECTIONS',
-                  style: GoogleFonts.workSans(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 0.8,
+                  style: context.textTheme.labelLarge?.copyWith(
                     color: context.colorScheme.onSurfaceVariant,
                   ),
                 ),
@@ -211,8 +201,7 @@ class SavedArticlesScreen extends HookWidget {
                       Text(
                         'No saved articles yet. Tap the bookmark icon on any article to save it.',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.workSans(
-                          fontSize: 13,
+                        style: context.textTheme.bodySmall?.copyWith(
                           color: context.colorScheme.onSurfaceVariant,
                           height: 1.4,
                         ),
@@ -230,6 +219,11 @@ class SavedArticlesScreen extends HookWidget {
   }
 
   void _onBookmarkPressed(BuildContext context, BookmarkEntity bookmark) {
+    if (bookmark.source == ArticleSource.community) {
+      context.goToCommunityDetailById(bookmark.sourceId);
+      return;
+    }
+
     final article = ArticleEntity(
       title: bookmark.title,
       description: bookmark.description,
@@ -239,9 +233,10 @@ class SavedArticlesScreen extends HookWidget {
       url: bookmark.sourceId,
       publishedAt: bookmark.publishedAt,
     );
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => ArticleDetailsView(article: article)),
+
+    context.goToArticleDetail(
+      Uri.encodeComponent(bookmark.sourceId),
+      article: article,
     );
   }
 
@@ -296,9 +291,7 @@ class _CompactBookmarkTile extends StatelessWidget {
                     bookmark.title ?? '',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.newsreader(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
+                    style: context.textTheme.titleLarge?.copyWith(
                       color: context.colorScheme.onSurface,
                       height: 1.2,
                     ),

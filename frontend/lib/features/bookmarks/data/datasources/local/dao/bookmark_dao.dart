@@ -58,24 +58,24 @@ class BookmarkDao extends DatabaseAccessor<AppDatabase>
 
   Stream<List<BookmarkModel>> watchAllBookmarks() {
     return select(bookmarks).watch().map(
-          (rows) => rows
-              .map(
-                (row) => BookmarkModel(
-                  sourceId: row.sourceId,
-                  source: ArticleSource.values.firstWhere(
-                    (e) => e.name == row.source,
-                  ),
-                  title: row.title,
-                  description: row.description,
-                  imageUrl: row.imageUrl,
-                  url: row.url,
-                  author: row.author,
-                  publishedAt: row.publishedAt,
-                  content: row.content,
-                ),
-              )
-              .toList(),
-        );
+      (rows) => rows
+          .map(
+            (row) => BookmarkModel(
+              sourceId: row.sourceId,
+              source: ArticleSource.values.firstWhere(
+                (e) => e.name == row.source,
+              ),
+              title: row.title,
+              description: row.description,
+              imageUrl: row.imageUrl,
+              url: row.url,
+              author: row.author,
+              publishedAt: row.publishedAt,
+              content: row.content,
+            ),
+          )
+          .toList(),
+    );
   }
 
   Future<BookmarkModel?> findBookmark(String sourceId, String source) async {

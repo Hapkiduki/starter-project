@@ -15,8 +15,8 @@ class BookmarkRepositoryImpl implements BookmarkRepository {
   @override
   Stream<List<BookmarkEntity>> watchBookmarks() {
     return _localDataSource.watchBookmarks().map(
-          (models) => models.map((m) => m.toEntity()).toList(),
-        );
+      (models) => models.map((m) => m.toEntity()).toList(),
+    );
   }
 
   @override
