@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:news_app_clean_architecture/core/design_system/extensions/build_context_extensions.dart';
 import 'package:news_app_clean_architecture/core/design_system/theme/app_colors.dart';
+import 'package:news_app_clean_architecture/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:news_app_clean_architecture/features/auth/routes/auth_routes.dart';
 
 /// Welcome / onboarding screen shown to unauthenticated users.
 ///
 /// Acts as the app entry point for unauthenticated users.
 /// Provides CTAs to sign in or continue as guest.
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends HookWidget {
   const WelcomeScreen({super.key, required this.onGuestPressed});
 
   final VoidCallback onGuestPressed;
 
   @override
   Widget build(BuildContext context) {
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!context.mounted) return;
+        final authBloc = context.read<AuthBloc>();
+        if (authBloc.state is AuthSignedOut) {
+          authBloc.add(const SignOutRedirectAcknowledged());
+        }
+      });
+      return null;
+    }, const []);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Stack(

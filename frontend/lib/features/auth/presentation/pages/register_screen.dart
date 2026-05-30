@@ -9,7 +9,7 @@ import 'package:news_app_clean_architecture/features/daily_news/routes/article_r
 import '../../routes/auth_routes.dart';
 import '../widgets/google_button.dart';
 
-/// Register screen \u2014 UI only, no Firebase Auth.
+/// Register screen UI only, no Firebase Auth.
 class RegisterScreen extends HookWidget {
   const RegisterScreen({super.key});
 

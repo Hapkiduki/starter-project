@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app_clean_architecture/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:news_app_clean_architecture/features/daily_news/routes/article_routes.dart';
@@ -41,7 +42,12 @@ class LoginScreen extends HookWidget {
       listener: (context, state) {
         switch (state) {
           case AuthAuthenticated():
-            context.goToFeed();
+            final from = GoRouterState.of(context).uri.queryParameters['from'];
+            if (from != null && from.isNotEmpty) {
+              context.go(from);
+            } else {
+              context.goToFeed();
+            }
           case AuthError(:final failure):
             context.showSnackBar(failure.message, isError: true);
           default:

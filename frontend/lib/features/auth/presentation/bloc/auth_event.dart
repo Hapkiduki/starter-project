@@ -39,6 +39,11 @@ final class SignOutRequested extends AuthEvent {
   const SignOutRequested();
 }
 
+/// Welcome screen consumed the explicit sign-out navigation state.
+final class SignOutRedirectAcknowledged extends AuthEvent {
+  const SignOutRedirectAcknowledged();
+}
+
 /// Internal event — not part of the public API.
 /// Added by the stream subscription in [AuthBloc] whenever Firebase
 /// auth state changes.

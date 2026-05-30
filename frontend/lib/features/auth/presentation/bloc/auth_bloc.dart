@@ -37,6 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignUpWithEmailRequested>(_onSignUpWithEmail);
     on<SignInWithGoogleRequested>(_onSignInWithGoogle);
     on<SignOutRequested>(_onSignOut);
+    on<SignOutRedirectAcknowledged>(_onSignOutRedirectAcknowledged);
 
     // Subscribe once for the lifetime of the bloc. Each Firebase auth change
     // adds an internal event — this never blocks the sequential event queue.
@@ -143,6 +144,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthSignedOut());
       case DataFailed<dynamic>(:final failure):
         emit(AuthError(failure: failure));
+    }
+  }
+
+  void _onSignOutRedirectAcknowledged(
+    SignOutRedirectAcknowledged event,
+    Emitter<AuthState> emit,
+  ) {
+    if (state is AuthSignedOut) {
+      emit(const AuthUnauthenticated());
     }
   }
 }
