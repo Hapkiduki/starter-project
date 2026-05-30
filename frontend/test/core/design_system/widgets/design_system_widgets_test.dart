@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:news_app_clean_architecture/config/theme/app_themes.dart';
 import 'package:news_app_clean_architecture/core/design_system/design_system.dart';
+import 'package:news_app_clean_architecture/l10n/generated/app_localizations.dart';
 
 void main() {
   group('BreakingBanner', () {
@@ -217,6 +218,8 @@ extension _WidgetPumps on WidgetTester {
     await pumpWidget(
       MaterialApp(
         theme: AppTheme.light,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(body: child),
       ),
     );

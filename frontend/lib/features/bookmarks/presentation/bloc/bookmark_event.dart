@@ -5,13 +5,13 @@ import '../../domain/entities/bookmark_entity.dart';
 
 sealed class BookmarkEvent extends Equatable {
   const BookmarkEvent();
+
+  @override
+  List<Object?> get props => [];
 }
 
 final class GetBookmarksEvent extends BookmarkEvent {
   const GetBookmarksEvent();
-
-  @override
-  List<Object?> get props => [];
 }
 
 final class AddBookmarkEvent extends BookmarkEvent {
@@ -31,4 +31,13 @@ final class RemoveBookmarkEvent extends BookmarkEvent {
 
   @override
   List<Object?> get props => [sourceId, source];
+}
+
+final class BookmarksUpdatedEvent extends BookmarkEvent {
+  final List<BookmarkEntity> bookmarks;
+
+  const BookmarksUpdatedEvent(this.bookmarks);
+
+  @override
+  List<Object?> get props => [bookmarks];
 }
