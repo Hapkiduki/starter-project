@@ -51,27 +51,8 @@ class HeroArticleCard extends StatelessWidget {
                         const SizedBox(height: 8),
                       ],
                       Text(title, style: context.textTheme.titleLarge),
-                      if (description != null) ...[
-                        const SizedBox(height: 6),
-                        Text(
-                          description!,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            color: context.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                      if (author != null || publishedAt != null) ...[
-                        const SizedBox(height: 8),
-                        Text(
-                          [
-                            if (author case final a?) 'By $a',
-                            if (publishedAt case final p?) p,
-                          ].join(' \u2022 '),
-                          style: context.textTheme.labelSmall,
-                        ),
-                      ],
+                      ...?_descriptionChildren(context),
+                      ...?_metadataChildren(context),
                     ],
                   ),
                 ),
@@ -81,6 +62,33 @@ class HeroArticleCard extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<Widget>? _descriptionChildren(BuildContext context) {
+    final description = this.description;
+    if (description == null) return null;
+
+    return [
+      const SizedBox(height: 6),
+      Text(
+        description,
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
+        style: context.textTheme.bodyMedium?.copyWith(
+          color: context.colorScheme.onSurfaceVariant,
+        ),
+      ),
+    ];
+  }
+
+  List<Widget>? _metadataChildren(BuildContext context) {
+    final metadata = [?(author == null ? null : 'By $author'), ?publishedAt];
+    if (metadata.isEmpty) return null;
+
+    return [
+      const SizedBox(height: 8),
+      Text(metadata.join(' \u2022 '), style: context.textTheme.labelSmall),
+    ];
   }
 
   Widget _buildImage(BuildContext context) {

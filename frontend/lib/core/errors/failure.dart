@@ -39,5 +39,5 @@ final class AuthFailure extends Failure {
 /// Failure due to lack of network connectivity.
 final class NetworkFailure extends Failure {
   const NetworkFailure()
-      : super(message: 'No internet connection. Please check your network.');
+    : super(message: 'No internet connection. Please check your network.');
 }
