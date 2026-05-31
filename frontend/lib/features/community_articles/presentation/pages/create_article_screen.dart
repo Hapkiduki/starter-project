@@ -39,12 +39,29 @@ class CreateArticleScreen extends HookWidget {
       () => _quillControllerFromContent(article?.content),
       [article?.content],
     );
-    final selectedCategory = useState<String?>(article?.category);
+    final selectedCategory = useState<String?>(
+      _categoryValueFor(article?.category),
+    );
     final focusNode = useFocusNode();
 
     useEffect(() {
       return quillCtrl.dispose;
     }, [quillCtrl]);
+
+    useEffect(() {
+      headlineCtrl.text = article?.title ?? '';
+      selectedCategory.value = _categoryValueFor(article?.category);
+
+      final editorBloc = context.read<CommunityArticleEditorBloc>();
+      final existingArticle = article;
+      if (existingArticle != null) {
+        editorBloc.add(CommunityArticleEditorLoaded(existingArticle));
+      } else {
+        editorBloc.add(const CommunityArticleEditorResetRequested());
+      }
+
+      return null;
+    }, [article?.id, article?.title, article?.category]);
 
     return BlocConsumer<
       CommunityArticleEditorBloc,
@@ -369,6 +386,7 @@ class CreateArticleScreen extends HookWidget {
       CommunityArticleUpdateRequested(
         UpdateArticleParams(
           id: existingArticle.id,
+          authorId: authState.user.uid,
           title: trimmedTitle,
           content: content,
           description: plainText,
@@ -550,4 +568,18 @@ QuillController _quillControllerFromContent(String? content) {
 
 String _quillControllerToJson(QuillController controller) {
   return jsonEncode(controller.document.toDelta().toJson());
+}
+
+String? _categoryValueFor(String? category) {
+  if (category == null || category.trim().isEmpty) {
+    return null;
+  }
+
+  for (final option in _kCategories) {
+    if (option.toLowerCase() == category.trim().toLowerCase()) {
+      return option;
+    }
+  }
+
+  return null;
 }

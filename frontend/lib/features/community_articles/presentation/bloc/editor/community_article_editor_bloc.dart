@@ -30,7 +30,14 @@ class CommunityArticleEditorBloc
     CommunityArticleEditorLoaded event,
     Emitter<CommunityArticleEditorState> emit,
   ) {
-    emit(state.copyWith(article: event.article, clearFailure: true));
+    emit(
+      state.copyWith(
+        article: event.article,
+        removeImage: false,
+        clearSelectedImage: true,
+        clearFailure: true,
+      ),
+    );
   }
 
   Future<void> _onCoverImagePickRequested(

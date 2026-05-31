@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/design_system/design_system.dart';
+import '../../routes/community_routes.dart';
 import '../bloc/articles/community_articles_bloc.dart';
 import '../bloc/articles/community_articles_event.dart';
 import '../bloc/articles/community_articles_state.dart';
@@ -119,6 +120,7 @@ class HomeCommunityTab extends HookWidget {
 
           final article = state.articles[index];
           return CommunityArticleTile(
+            key: ValueKey(article.id),
             authorName: article.authorName,
             avatarInitials: _initialsFor(article.authorName),
             category: (article.category ?? 'COMMUNITY').toUpperCase(),
@@ -127,7 +129,7 @@ class HomeCommunityTab extends HookWidget {
             excerpt: article.description ?? article.content,
             timeAgo: _formatTimeAgo(article.publishedAt),
             commentCount: 0,
-            onTap: () => context.go('/community/detail', extra: article),
+            onTap: () => context.goToCommunityDetail(article),
           );
         },
       ),

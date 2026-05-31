@@ -51,6 +51,7 @@ class CreateArticleParams {
 /// explicitly delete the current image without replacing it.
 class UpdateArticleParams {
   final String id;
+  final String authorId;
   final String? title;
   final String? content;
   final String? description;
@@ -60,6 +61,7 @@ class UpdateArticleParams {
 
   const UpdateArticleParams({
     required this.id,
+    required this.authorId,
     this.title,
     this.content,
     this.description,

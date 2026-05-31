@@ -142,7 +142,7 @@ class CommunityArticleRepositoryImpl implements CommunityArticleRepository {
 
       if (params.imageFile != null) {
         newImageUrl = await _storageDataSource.uploadArticleImage(
-          params.id,
+          params.authorId,
           params.imageFile!,
         );
         if (oldImageUrl != null) {

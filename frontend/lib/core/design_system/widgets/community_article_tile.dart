@@ -105,11 +105,12 @@ class CommunityArticleTile extends StatelessWidget {
     }
     return CircleAvatar(
       radius: 18,
-      backgroundColor: context.colorScheme.surfaceContainer,
+      backgroundColor: context.colorScheme.onSurfaceVariant,
+
       child: Text(
         avatarInitials ?? authorName.substring(0, 2).toUpperCase(),
         style: context.textTheme.labelSmall?.copyWith(
-          color: context.colorScheme.onSurfaceVariant,
+          color: context.colorScheme.onInverseSurface,
         ),
       ),
     );
