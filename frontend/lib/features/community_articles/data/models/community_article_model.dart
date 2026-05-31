@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../domain/entities/community_article_entity.dart';
 
-/// Data model for a community article, mapping to and from Firestore documents.
+/// Data model for a community article.
 class CommunityArticleModel extends CommunityArticleEntity {
   const CommunityArticleModel({
     required super.id,
@@ -17,13 +15,10 @@ class CommunityArticleModel extends CommunityArticleEntity {
     super.updatedAt,
   });
 
-  /// Creates a [CommunityArticleModel] from a Firestore [DocumentSnapshot].
-  factory CommunityArticleModel.fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> doc,
-  ) {
-    final data = doc.data()!;
+  /// Creates a [CommunityArticleModel] from provider-neutral raw data.
+  factory CommunityArticleModel.fromRawData(Map<String, dynamic> data) {
     return CommunityArticleModel(
-      id: doc.id,
+      id: data['id'] as String,
       authorId: data['authorId'] as String,
       authorName: data['authorName'] as String,
       title: data['title'] as String,
@@ -31,24 +26,9 @@ class CommunityArticleModel extends CommunityArticleEntity {
       description: data['description'] as String?,
       imageUrl: data['imageUrl'] as String?,
       category: data['category'] as String?,
-      publishedAt: (data['publishedAt'] as Timestamp).toDate(),
-      updatedAt: (data['updatedAt'] as Timestamp?)?.toDate(),
+      publishedAt: data['publishedAt'] as DateTime,
+      updatedAt: data['updatedAt'] as DateTime?,
     );
-  }
-
-  /// Serializes this model to a Firestore-compatible map.
-  Map<String, dynamic> toFirestore() {
-    return {
-      'authorId': authorId,
-      'authorName': authorName,
-      'title': title,
-      'content': content,
-      if (description != null) 'description': description,
-      if (imageUrl != null) 'imageUrl': imageUrl,
-      if (category != null) 'category': category,
-      'publishedAt': Timestamp.fromDate(publishedAt),
-      if (updatedAt != null) 'updatedAt': Timestamp.fromDate(updatedAt!),
-    };
   }
 
   /// Converts this model to a pure domain [CommunityArticleEntity].

@@ -17,6 +17,32 @@ class FirestoreArticlesDataSource {
 
   FirestoreArticlesDataSource(this._firestore);
 
+  /// Watches the newest community articles ordered by newest first.
+  Stream<List<CommunityArticleModel>> watchArticles(int pageSize) {
+    try {
+      return _firestore
+          .collection(_collection)
+          .orderBy('publishedAt', descending: true)
+          .limit(pageSize)
+          .snapshots()
+          .map((snapshot) => snapshot.docs.map(_modelFromDocument).toList())
+          .handleError((Object error) {
+            if (error is FirebaseException) {
+              throw ServerException(
+                message: ServerErrorKeys.generic,
+                statusCode: int.tryParse(error.code),
+              );
+            }
+            throw const ServerException(message: ServerErrorKeys.generic);
+          });
+    } on FirebaseException catch (e) {
+      throw ServerException(
+        message: ServerErrorKeys.generic,
+        statusCode: int.tryParse(e.code),
+      );
+    }
+  }
+
   /// Fetches a page of community articles ordered by newest first.
   ///
   /// Pass [lastDocumentId] for cursor-based pagination (next page).
@@ -41,13 +67,7 @@ class FirestoreArticlesDataSource {
       }
 
       final snapshot = await query.get();
-      return snapshot.docs
-          .map(
-            (doc) => CommunityArticleModel.fromFirestore(
-              doc as DocumentSnapshot<Map<String, dynamic>>,
-            ),
-          )
-          .toList();
+      return snapshot.docs.map(_modelFromDocument).toList();
     } on FirebaseException catch (e) {
       throw ServerException(
         message: ServerErrorKeys.generic,
@@ -63,7 +83,7 @@ class FirestoreArticlesDataSource {
       if (!doc.exists) {
         throw const ServerException(message: ServerErrorKeys.notFound);
       }
-      return CommunityArticleModel.fromFirestore(doc);
+      return _modelFromDocument(doc);
     } on ServerException {
       rethrow;
     } on FirebaseException catch (e) {
@@ -83,13 +103,7 @@ class FirestoreArticlesDataSource {
           .orderBy('publishedAt', descending: true)
           .get();
 
-      return snapshot.docs
-          .map(
-            (doc) => CommunityArticleModel.fromFirestore(
-              doc as DocumentSnapshot<Map<String, dynamic>>,
-            ),
-          )
-          .toList();
+      return snapshot.docs.map(_modelFromDocument).toList();
     } on FirebaseException catch (e) {
       throw ServerException(
         message: ServerErrorKeys.generic,
@@ -123,7 +137,7 @@ class FirestoreArticlesDataSource {
 
       final docRef = await _firestore.collection(_collection).add(data);
       final created = await docRef.get();
-      return CommunityArticleModel.fromFirestore(created);
+      return _modelFromDocument(created);
     } on FirebaseException catch (e) {
       throw ServerException(
         message: ServerErrorKeys.generic,
@@ -151,14 +165,14 @@ class FirestoreArticlesDataSource {
         'content': ?content,
         'description': ?description,
         'category': ?category,
-        if (imageUrl != null) 'imageUrl': imageUrl,
+        'imageUrl': ?imageUrl,
         if (removeImageUrl) 'imageUrl': FieldValue.delete(),
         'updatedAt': FieldValue.serverTimestamp(),
       };
 
       await _firestore.collection(_collection).doc(id).update(updates);
       final updated = await _firestore.collection(_collection).doc(id).get();
-      return CommunityArticleModel.fromFirestore(updated);
+      return _modelFromDocument(updated);
     } on FirebaseException catch (e) {
       throw ServerException(
         message: ServerErrorKeys.generic,
@@ -177,5 +191,17 @@ class FirestoreArticlesDataSource {
         statusCode: int.tryParse(e.code),
       );
     }
+  }
+
+  CommunityArticleModel _modelFromDocument(
+    DocumentSnapshot<Map<String, dynamic>> doc,
+  ) {
+    final data = doc.data()!;
+    return CommunityArticleModel.fromRawData({
+      ...data,
+      'id': doc.id,
+      'publishedAt': (data['publishedAt'] as Timestamp).toDate(),
+      'updatedAt': (data['updatedAt'] as Timestamp?)?.toDate(),
+    });
   }
 }

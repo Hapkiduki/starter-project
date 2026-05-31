@@ -5,8 +5,8 @@ import 'package:news_app_clean_architecture/core/resources/data_state.dart';
 import 'package:news_app_clean_architecture/core/resources/paginated_result.dart';
 
 import '../../domain/entities/community_article_entity.dart';
+import '../../domain/params/community_article_params.dart';
 import '../../domain/repository/community_article_repository.dart';
-import '../../domain/usecases/community_article_params.dart';
 import '../datasources/remote/firebase_storage_datasource.dart';
 import '../datasources/remote/firestore_articles_datasource.dart';
 
@@ -45,6 +45,23 @@ class CommunityArticleRepositoryImpl implements CommunityArticleRepository {
       );
     } on ServerException catch (e) {
       return DataFailed(
+        ServerFailure(message: e.message, statusCode: e.statusCode),
+      );
+    }
+  }
+
+  @override
+  Stream<DataState<List<CommunityArticleEntity>>> watchCommunityArticles({
+    required CommunityArticleParams params,
+  }) async* {
+    try {
+      await for (final models in _firestoreDataSource.watchArticles(
+        params.pageSize,
+      )) {
+        yield DataSuccess(models.map((m) => m.toEntity()).toList());
+      }
+    } on ServerException catch (e) {
+      yield DataFailed(
         ServerFailure(message: e.message, statusCode: e.statusCode),
       );
     }
