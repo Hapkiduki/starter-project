@@ -1,8 +1,7 @@
-/// Parameters for the GetArticleUseCase.
+/// Parameters for the get article use case and repository.
 ///
 /// This class encapsulates pagination parameters (page and pageSize)
-/// to be passed to the use case, following Clean Architecture patterns
-/// as defined in APP_ARCHITECTURE.md.
+/// to be passed across the domain boundary.
 class ArticleParams {
   /// The page number to fetch (1-based indexing). Defaults to 1.
   final int page;

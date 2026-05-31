@@ -1,24 +1,24 @@
 import 'package:equatable/equatable.dart';
-import 'package:dio/dio.dart';
-import '../../../../domain/entities/article.dart';
+import 'package:news_app_clean_architecture/core/errors/failure.dart';
+import '../../domain/entities/article.dart';
 
-abstract class RemoteArticlesState extends Equatable {
+sealed class RemoteArticlesState extends Equatable {
   final List<ArticleEntity>? articles;
-  final DioError? error;
+  final Failure? failure;
 
-  const RemoteArticlesState({this.articles, this.error});
+  const RemoteArticlesState({this.articles, this.failure});
 
   @override
-  List<Object?> get props => [articles, error];
+  List<Object?> get props => [articles, failure];
 }
 
 /// Loading state for initial article fetch.
-class RemoteArticlesLoading extends RemoteArticlesState {
+final class RemoteArticlesLoading extends RemoteArticlesState {
   const RemoteArticlesLoading();
 }
 
 /// Success state with articles and pagination metadata.
-class RemoteArticlesDone extends RemoteArticlesState {
+final class RemoteArticlesDone extends RemoteArticlesState {
   /// The current page number (1-based).
   final int currentPage;
 
@@ -41,11 +41,11 @@ class RemoteArticlesDone extends RemoteArticlesState {
     currentPage,
     hasMore,
     isLoadingMore,
-    error,
+    failure,
   ];
 }
 
 /// Error state when article fetch fails.
-class RemoteArticlesError extends RemoteArticlesState {
-  const RemoteArticlesError(DioError error) : super(error: error);
+final class RemoteArticlesError extends RemoteArticlesState {
+  const RemoteArticlesError(Failure failure) : super(failure: failure);
 }

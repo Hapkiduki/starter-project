@@ -6,7 +6,7 @@ import 'package:retrofit/retrofit.dart';
 
 import 'news_api_client.dart';
 
-@injectable
+@lazySingleton
 class NewsApiService {
   final NewsApiClient _client;
 
